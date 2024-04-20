@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { db } from "~/server/db";
 
-export default function HomePage() {
+export default async function HomePage() {
   const mockImages = [
     { id: 0, url: `https://picsum.photos/id/1/300/180` },
     {
@@ -21,9 +22,16 @@ export default function HomePage() {
     },
   ];
 
+  const posts = await db.query.posts.findMany();
+
+  console.log(posts);
+
   return (
     <main className="w-full">
       <div className="flex flex-row flex-wrap gap-4">
+        {posts.map((post, index) => {
+          return <div key={post.id}>{post.name}</div>;
+        })}
         {mockImages.map((image) => {
           return (
             <div className="h-44 w-72 p-4" key={image.id}>
