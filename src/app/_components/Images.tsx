@@ -1,20 +1,19 @@
+import Image from "next/image";
 import React from "react";
-import { db } from "~/server/db";
+import { getMyImages } from "~/server/queries";
 
 const Images = async () => {
-  const imagesd = await db.query.images.findMany({
-    orderBy: (model, { desc }) => desc(model.id),
-  });
+  const imagesd = await getMyImages();
   return (
-    <div className="flex flex-row flex-wrap gap-4">
+    <div className="flex flex-row flex-wrap justify-center gap-4">
       {imagesd.map((image) => {
         return (
           <div className="h-44 w-72 p-4" key={image.id}>
-            <img
-              src={image.url?.replace(
-                "idPlaceHolder",
-                Math.floor(Math.random() * 200).toString(),
-              )}
+            <Image
+              src={image.url}
+              width={300}
+              height={180}
+              style={{ objectFit: "contain" }}
               alt="image"
             />
           </div>
